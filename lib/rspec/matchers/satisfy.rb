@@ -1,7 +1,6 @@
 module RSpec
   module Matchers
-    
-    class Satisfy #:nodoc:
+    class Satisfy
       def initialize(&block)
         @block = block
       end
@@ -25,10 +24,6 @@ module RSpec
       end
     end
     
-    # :call-seq:
-    #   should satisfy {}
-    #   should_not satisfy {}
-    #
     # Passes if the submitted block returns true. Yields target to the
     # block.
     #
@@ -39,7 +34,7 @@ module RSpec
     # If you do find yourself in such a situation, you could always write
     # a custom matcher, which would likely make your specs more expressive.
     #
-    # == Examples
+    # @example
     #
     #   5.should satisfy { |n|
     #     n > 3

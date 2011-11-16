@@ -2,32 +2,51 @@ require 'rspec/matchers/dsl'
 
 module RSpec
   module Matchers
+    class BeTrue
+      include BaseMatcher
 
-    # @method be_true
-    RSpec::Matchers.define :be_true do
-      match do |actual|
-        actual
+      def matches?(actual)
+        super(actual)
       end
     end
 
-    RSpec::Matchers.define :be_false do
-      match do |actual|
-        !actual
+    # Passes if actual is truthy (anything but false or nil)
+    def be_true
+      BeTrue.new
+    end
+
+    class BeFalse
+      include BaseMatcher
+
+      def matches?(actual)
+        !super(actual)
       end
     end
 
-    RSpec::Matchers.define :be_nil do
-      match do |actual|
-        actual.nil?
+    # Passes if actual is falsy (false or nil)
+    def be_false
+      BeFalse.new
+    end
+
+    class BeNil
+      include BaseMatcher
+
+      def matches?(actual)
+        super(actual).nil?
       end
 
-      failure_message_for_should do |actual|
+      def failure_message_for_should
         "expected: nil\n     got: #{actual.inspect}"
       end
 
-      failure_message_for_should_not do
+      def failure_message_for_should_not
         "expected: not nil\n     got: nil"
       end
+    end
+
+    # Passes if actual is nil
+    def be_nil
+      BeNil.new
     end
 
     class Be

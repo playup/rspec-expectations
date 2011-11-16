@@ -1,7 +1,7 @@
 module RSpec
   module Matchers
     class Matcher
-      include RSpec::Matchers::InstanceExec
+      include RSpec::Matchers::Extensions::InstanceEvalWithArgs
       include RSpec::Matchers::Pretty
       include RSpec::Matchers
 
@@ -20,7 +20,7 @@ module RSpec
           :failure_message_for_should_not => lambda {|actual| "expected #{actual.inspect} not to #{name_to_sentence}#{expected_to_sentence}"}
         }
         making_declared_methods_public do
-          instance_exec(*@expected, &declarations)
+          instance_eval_with_args(*@expected, &declarations)
         end
       end
       
@@ -29,14 +29,14 @@ module RSpec
         @actual = actual
         if @expected_exception
           begin
-            instance_exec(actual, &@match_block)
+            instance_eval_with_args(actual, &@match_block)
             true
           rescue @expected_exception => @rescued_exception
             false
           end
         else
           begin
-            instance_exec(actual, &@match_block)
+            instance_eval_with_args(actual, &@match_block)
           rescue RSpec::Expectations::ExpectationNotMetError
             false
           end
@@ -47,7 +47,7 @@ module RSpec
       def does_not_match?(actual)
         @actual = actual
         @match_for_should_not_block ?
-          instance_exec(actual, &@match_for_should_not_block) :
+          instance_eval_with_args(actual, &@match_for_should_not_block) :
           !matches?(actual)
       end
 
@@ -55,7 +55,7 @@ module RSpec
         singleton_class.__send__(:include, *args)
       end
 
-      def define_method(name, &block) # :nodoc:
+      def define_method(name, &block)
         singleton_class.__send__(:define_method, name, &block)
       end
 
@@ -119,7 +119,7 @@ module RSpec
         end
       end
     
-      def making_declared_methods_public # :nodoc:
+      def making_declared_methods_public
         # Our home-grown instance_exec in ruby 1.8.6 results in any methods
         # declared in the block eval'd by instance_exec in the block to which we
         # are yielding here are scoped private. This is NOT the case for Ruby
@@ -145,14 +145,6 @@ module RSpec
 
       def call_cached(key)
         @messages[key].arity == 1 ? @messages[key].call(@actual) : @messages[key].call
-      end
-
-      def name_to_sentence
-        split_words(@name)
-      end
-
-      def expected_to_sentence
-        to_sentence(@expected)
       end
 
       unless method_defined?(:singleton_class)

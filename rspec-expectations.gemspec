@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "rspec-expectations"
   s.version     = RSpec::Expectations::Version::STRING
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["David Chelimsky", "Chad Humphries"]
-  s.email       = "dchelimsky@gmail.com;chad.humphries@gmail.com"
+  s.authors     = ["David Chelimsky", "Steven Baker"]
+  s.email       = "rspec-users@rubyforge.org"
   s.homepage    = "http://github.com/rspec/rspec-expectations"
   s.summary     = "rspec-expectations-#{RSpec::Expectations::Version::STRING}"
   s.description = "rspec expectations (should[_not] and matchers)"

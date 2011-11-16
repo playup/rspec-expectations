@@ -1,6 +1,6 @@
 module RSpec
   module Matchers
-    class RaiseError #:nodoc:
+    class RaiseError
       def initialize(expected_error_or_message=Exception, expected_message=nil, &block)
         @block = block
         @actual_error = nil
@@ -25,7 +25,7 @@ module RSpec
         rescue Exception => @actual_error
           # This clause should be empty, but rcov will not report it as covered
           # unless something (anything) is executed within the clause
-          rcov_error_report = "http://eigenclass.org/hiki.rb?rcov-0.8.0"
+          "http://eigenclass.org/hiki.rb?rcov-0.8.0"
         end
 
         unless negative_expectation?
@@ -90,27 +90,13 @@ module RSpec
         end
     end
     
-    # :call-seq:
-    #   should raise_error()
-    #   should raise_error(NamedError)
-    #   should raise_error(NamedError, String)
-    #   should raise_error(NamedError, Regexp)
-    #   should raise_error() { |error| ... }
-    #   should raise_error(NamedError) { |error| ... }
-    #   should raise_error(NamedError, String) { |error| ... }
-    #   should raise_error(NamedError, Regexp) { |error| ... }
-    #   should_not raise_error()
-    #   should_not raise_error(NamedError)
-    #   should_not raise_error(NamedError, String)
-    #   should_not raise_error(NamedError, Regexp)
-    #
     # With no args, matches if any error is raised.
     # With a named error, matches only if that specific error is raised.
     # With a named error and messsage specified as a String, matches only if both match.
     # With a named error and messsage specified as a Regexp, matches only if both match.
     # Pass an optional block to perform extra verifications on the exception matched
     #
-    # == Examples
+    # @example
     #
     #   lambda { do_something_risky }.should raise_error
     #   lambda { do_something_risky }.should raise_error(PoorRiskDecisionError)

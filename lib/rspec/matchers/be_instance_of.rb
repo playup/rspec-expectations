@@ -1,24 +1,22 @@
 module RSpec
   module Matchers
-    # :call-seq:
-    #   should be_instance_of(expected)
-    #   should be_an_instance_of(expected)
-    #   should_not be_instance_of(expected)
-    #   should_not be_an_instance_of(expected)
-    #
+    class BeAnInstanceOf
+      include BaseMatcher
+
+      def matches?(actual)
+        super(actual).instance_of?(expected)
+      end
+    end
+
     # Passes if actual.instance_of?(expected)
     #
-    # == Examples
+    # @example
     #
     #   5.should be_instance_of(Fixnum)
     #   5.should_not be_instance_of(Numeric)
     #   5.should_not be_instance_of(Float)
     def be_an_instance_of(expected)
-      Matcher.new :be_an_instance_of, expected do |_expected_|
-        match do |actual|
-          actual.instance_of?(_expected_)
-        end
-      end
+      BeAnInstanceOf.new(expected)
     end
     
     alias_method :be_instance_of, :be_an_instance_of

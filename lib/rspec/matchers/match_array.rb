@@ -1,7 +1,6 @@
 module RSpec
   module Matchers
-
-    class MatchArray #:nodoc:
+    class MatchArray
       include RSpec::Matchers::Pretty
       
       def initialize(expected)
@@ -46,20 +45,15 @@ module RSpec
           end
           difference
         end
-
-
     end
 
-    # :call-seq:
-    #   should =~ expected
-    #
     # Passes if actual contains all of the expected regardless of order. 
     # This works for collections. Pass in multiple args  and it will only 
     # pass if all args are found in collection.
     #
     # NOTE: there is no should_not version of array.should =~ other_array
     # 
-    # == Examples
+    # @example
     #
     #   [1,2,3].should   =~ [1,2,3]   # => would pass
     #   [1,2,3].should   =~ [2,3,1]   # => would pass

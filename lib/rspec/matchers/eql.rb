@@ -1,45 +1,35 @@
 module RSpec
   module Matchers
-    # :call-seq:
-    #   should eql(expected)
-    #   should_not eql(expected)
-    #
-    # Passes if actual and expected are of equal value, but not necessarily the same object.
+    class Eql
+      include BaseMatcher
+
+      def matches?(actual)
+        super(actual).eql?(expected)
+      end
+
+      def failure_message_for_should
+        "\nexpected: #{expected.inspect}\n     got: #{actual.inspect}\n\n(compared using eql?)\n"
+      end
+
+      def failure_message_for_should_not
+        "\nexpected: value != #{expected.inspect}\n     got: #{actual.inspect}\n\n(compared using eql?)\n"
+      end
+
+      def diffable?
+        true
+      end
+    end
+
+    # Passes if +actual.eql?(expected)+
     #
     # See http://www.ruby-doc.org/core/classes/Object.html#M001057 for more information about equality in Ruby.
     #
-    # == Examples
+    # @example
     #
     #   5.should eql(5)
     #   5.should_not eql(3)
     def eql(expected)
-      Matcher.new :eql, expected do |_expected_|
-
-        diffable
-
-        match do |actual|
-          actual.eql?(_expected_)
-        end
-
-        failure_message_for_should do |actual|
-          <<-MESSAGE
-
-expected #{_expected_.inspect}
-     got #{actual.inspect}
-
-(compared using eql?)
-MESSAGE
-        end
-
-        failure_message_for_should_not do |actual|
-          <<-MESSAGE
-
-expected #{actual.inspect} not to equal #{_expected_.inspect}
-
-(compared using eql?)
-MESSAGE
-        end
-      end
+      Eql.new(expected)
     end
   end
 end

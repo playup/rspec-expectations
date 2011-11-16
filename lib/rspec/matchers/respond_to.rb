@@ -1,7 +1,6 @@
 module RSpec
   module Matchers
-    
-    class RespondTo #:nodoc:
+    class RespondTo
       def initialize(*names)
         @names = names
         @expected_arity = nil
@@ -69,14 +68,10 @@ module RSpec
       end
     end
     
-    # :call-seq:
-    #   should respond_to(*names)
-    #   should_not respond_to(*names)
-    #
     # Matches if the target object responds to all of the names
     # provided. Names can be Strings or Symbols.
     #
-    # == Examples
+    # @example
     # 
     def respond_to(*names)
       Matchers::RespondTo.new(*names)
