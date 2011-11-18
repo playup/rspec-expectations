@@ -9,17 +9,17 @@ end
 
 module RSpec
   module Matchers
-    describe :be_hash_matching do
+    describe :be_matching do
 
-      shared_examples_for "a hash matcher" do
+      shared_examples_for "a matcher" do
         it "passes if matches" do
-          same.should be_hash_matching(expected, opts)
+          same.should be_matching(expected, opts)
         end
 
         it "fails if doesn't match" do
           failure_message = fix_eof_problem(difference)
           DiffMatcher::Difference.new(expected, different, opts).to_s.should == failure_message
-          lambda { different.should be_hash_matching(expected, opts) }.should fail_with failure_message
+          lambda { different.should be_matching(expected, opts) }.should fail_with failure_message
         end
       end
 
@@ -28,32 +28,9 @@ module RSpec
         let(:same      ) { { :a=>{ :a1=>11          }, :b=>[ 21, 22 ], :c=>'3' , :d=>4     , :e=>5                                } }
         let(:different ) { { :a=>{ :a1=>10, :a2=>12 }, :b=>[ 21     ], :c=>'3' , :d=>4     , :e=>5                                } }
 
-        before { RSpec.configuration.should_receive(:color_enabled?).and_return false }
+        before { RSpec.configuration.stub(:color_enabled? => false) }
 
-        describe "it shows regex, class, proc matches and" do
-          let(:opts) { {} }
-          let(:difference) {
-            <<-EOF
-            {
-              :a=>{
-                :a1=>- 11+ 10,
-              + :a2=>12
-              },
-              :b=>[
-              - 22
-              ],
-              :c=>~ (3),
-              :d=>: 4,
-              :e=>{ 5
-            }
-            Where, - 2 missing, + 2 additional, ~ 1 match_regexp, : 1 match_class, { 1 match_proc
-            EOF
-          }
-
-          it_should_behave_like "a hash matcher"
-        end
-
-        describe "it doesn't show matches and" do
+        describe "it doesn't show pattern matches" do
           let(:opts) { { :quiet=>true } }
           let(:difference) {
             <<-EOF
@@ -70,7 +47,7 @@ module RSpec
             EOF
           }
 
-          it_should_behave_like "a hash matcher"
+          it_should_behave_like "a matcher"
         end
 
         describe "it ignores additional values" do
@@ -91,11 +68,11 @@ module RSpec
             EOF
           }
 
-          it_should_behave_like "a hash matcher"
+          it_should_behave_like "a matcher"
         end
 
-        describe "it shows all matches and" do
-          let(:opts) { { :verbose=>true } }
+        describe "it shows all matches" do
+          let(:opts) { {} }
           let(:difference) {
             <<-EOF
             {
@@ -115,10 +92,10 @@ module RSpec
             EOF
           }
 
-          it_should_behave_like "a hash matcher"
+          it_should_behave_like "a matcher"
         end
 
-        describe "it shows matches in color and" do
+        describe "it shows matches in color" do
           let(:opts) { { :verbose=>true, :color_scheme=>:default } }
           let(:difference) {
             <<-EOF
@@ -139,7 +116,7 @@ module RSpec
             EOF
           }
 
-          it_should_behave_like "a hash matcher"
+          it_should_behave_like "a matcher"
 
           context "on a white background" do
             let(:opts) { { :verbose=>true, :color_scheme=>:white_background } }
@@ -162,7 +139,7 @@ module RSpec
               EOF
             }
 
-            it_should_behave_like "a hash matcher"
+            it_should_behave_like "a matcher"
           end
         end
       end
