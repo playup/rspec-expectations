@@ -18,7 +18,6 @@ module RSpec
 
         it "fails if doesn't match" do
           failure_message = fix_eof_problem(difference)
-          DiffMatcher::Difference.new(expected, different, opts).to_s.should == failure_message
           lambda { different.should be_matching(expected, opts) }.should fail_with failure_message
         end
       end

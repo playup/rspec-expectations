@@ -7,7 +7,7 @@ module RSpec
 
       def initialize(expected, opts)
         @expected = expected
-        @opts = opts
+        @opts = opts.update(:color_enabled=>RSpec::configuration.color_enabled?)
       end
 
       def matches?(actual)
