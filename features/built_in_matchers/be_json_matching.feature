@@ -7,7 +7,7 @@ Feature: be_json_matching matcher
         it { should be_json_matching({ 'x'=>{'a'=>/[A-Z]{3}/ } }) }
       end
 
-      describe '{ "x": {"a": "123" } }' do
+      describe '{ "x": { "a": "123" } }' do
         it { should be_json_matching({ 'x'=>{'a'=>/[A-Z]{3}/ } }) }
 
         # deliberate failures
@@ -19,7 +19,7 @@ Feature: be_json_matching matcher
     """
     Failures:
 
-      1) { "x": {"a": "123" } } 
+      1) { "x": { "a": "123" } } 
          Failure/Error: it { should be_json_matching({ 'x'=>{'a'=>/[A-Z]{3}/ } }) }
            {
              "x"=>{
